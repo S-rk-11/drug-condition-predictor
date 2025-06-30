@@ -1,21 +1,32 @@
-# app.py
 import streamlit as st
 import joblib
 
+# Load saved components
 model = joblib.load('model.pkl')
 vectorizer = joblib.load('vectorizer.pkl')
-le = joblib.load('label_encoder.pkl')
+label_encoder = joblib.load('label_encoder.pkl')
 
-st.title("Patient Condition Prediction from Drug Review")
-user_input = st.text_area("Enter the patient's review:")
+# App title
+st.title("Drug Review Condition Predictor")
 
+# User input
+user_input = st.text_area("Enter a patient's review below:")
+
+# Predict button
 if st.button("Predict Condition"):
-    if user_input.strip() == "":
-        st.warning("Please enter a valid review.")
+    if not user_input.strip():
+        st.warning("Please enter a review to predict the condition.")
     else:
+        # Vectorize the input
         X_new = vectorizer.transform([user_input])
-        if X_new.nnz == 0:
-            st.error("No known words in input. Try using more descriptive text.")
+
+        # Check if the input contains known vocabulary
+        if X_new.nnz == 0:  # nnz = non-zero features
+            st.error("Review contains no recognizable words. Try rephrasing.")
         else:
+            # Predict
             pred_class = model.predict(X_new)[0]
-            predicted_condition = le.inverse_transform([pred_class])_]()
+            predicted_condition = label_encoder.inverse_transform([pred_class])[0]
+
+            # Display result
+            st.success(f"Predicted Condition: **{predicted_condition}**")
