@@ -2,8 +2,8 @@ import streamlit as st
 import joblib
 
 # Load saved components
-model = joblib.load('model.pkl')
-vectorizer = joblib.load('vectorizer.pkl')
+model = joblib.load('model (4).pkl')
+vectorizer = joblib.load('vectorizer (4).pkl')
 label_encoder = joblib.load('label_encoder.pkl')
 
 # App title
